@@ -8,7 +8,12 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import RoomPage from './components/RoomPage';
 import PrivateRoute from '@auth/PrivateRoute';
+
+
+import ThemeToggle from './components/ui/ThemeToggle';
+import { useTheme } from './theme/ThemeContext';
 import { useAuth } from '@auth/AuthContext';
+
 
 function App() {
   const { currentUser, loading } = useAuth();
@@ -26,42 +31,45 @@ function App() {
   }
 
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route 
-        path="/" 
-        element={currentUser ? <Navigate to="/dashboard" replace /> : <Home />} 
-      />
-      <Route 
-        path="/login" 
-        element={currentUser ? <Navigate to="/dashboard" replace /> : <Login />} 
-      />
-      <Route 
-        path="/register" 
-        element={currentUser ? <Navigate to="/dashboard" replace /> : <Register />} 
-      />
+    <>
+      <ThemeToggle />
+      <Routes>
+        {/* Public Routes */}
+        <Route 
+          path="/" 
+          element={currentUser ? <Navigate to="/dashboard" replace /> : <Home />} 
+        />
+        <Route 
+          path="/login" 
+          element={currentUser ? <Navigate to="/dashboard" replace /> : <Login />} 
+        />
+        <Route 
+          path="/register" 
+          element={currentUser ? <Navigate to="/dashboard" replace /> : <Register />} 
+        />
 
-      {/* Protected Routes */}
-      <Route 
-        path="/dashboard" 
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        } 
-      />
-      <Route 
-        path="/room/:roomId" 
-        element={
-          <PrivateRoute>
-            <RoomPage />
-          </PrivateRoute>
-        } 
-      />
+        {/* Protected Routes */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/room/:roomId" 
+          element={
+            <PrivateRoute>
+              <RoomPage />
+            </PrivateRoute>
+          } 
+        />
 
-      {/* Catch all route - redirect to home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Catch all route - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
 
